@@ -41,11 +41,11 @@ app.route('/database').get(function(req, res) {
        str = "";
        cursor.forEach(function(item) {
            if (item != null) {
-                   str = str + "    Firstname " + item.Employeeid + "</br>";
+                   str = str + "    Firstname " + item.firstName + "</br>";
            }
        }, function(err) {
            res.send(err);
-           db.close();
+           client.close();
           }
        );
    });
