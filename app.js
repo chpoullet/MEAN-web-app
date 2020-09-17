@@ -4,8 +4,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var MongoClient = require('mongodb').MongoClient
-var url = 'mongodb://localhost:27017/information';
-var str = "";
+var url = 'mongodb://localhost:27017/';
 
 
 app.set('view engine', 'pug');
@@ -33,22 +32,16 @@ app.post('/details', (req, res) => {
 		})
 });
 
-app.route('/database').get(function(req, res) {
-   MongoClient.connect('mongodb://localhost', function(err, client) {
-		 	 var db = client.db('information');
-       var collection = db.collection('information');
-       var cursor = collection.find({});
-       str = "";
-       cursor.forEach(function(item) {
-           if (item != null) {
-                   str = str + "    Firstname " + item.firstName + "</br>";
-           }
-       }, function(err) {
-           res.send(err);
-           client.close();
-          }
-       );
-   });
+app.get('/database', function(req, res) {
+	MongoClient.connect(url, function(err, db) {
+  	if (err) throw err;
+  	var dbo = db.db("information");
+  	dbo.collection("users").find({}, { projection: { _id: 0, firstName: 1, lastName: 1 } }).toArray(function(err, result) {
+    	if (err) throw err;
+    	console.log(result);
+    	db.close();
+  	});
+	});
 });
 
 
