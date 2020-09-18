@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 
 
 
-app.set('view engine', 'pug');
+app.set('view engine', 'pug'); // defining engine as Pug
 app.set('views','./views');
 
 app.use(bodyParser.json());
@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/information")
-var nameSchema = new mongoose.Schema({
+mongoose.connect("mongodb://localhost:27017/information") // testing connection
+var nameSchema = new mongoose.Schema({ // Creating 3 keys, with 3 placeholder strings
 	firstName: String,
 	lastName: String,
 	email: String
@@ -30,7 +30,7 @@ app.post('/database', (req, res) => {
 		.then(item => {
 			res.render('database')
 		})
-	  .catch(err => {
+	  .catch(err => { // if unsuccessful at inputting into database - will throw error
 	  	res.status(400).send("Unable to save to database");
 	  });
 });
@@ -50,7 +50,6 @@ app.post('/search', (req, res) => {
 		res.render('results', {users: users});
 	})
 });
-
 
 
 
