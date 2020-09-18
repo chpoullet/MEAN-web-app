@@ -1,8 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient
-var url = 'mongodb://localhost:27017/';
+
 
 
 app.set('view engine', 'pug');
@@ -25,29 +24,32 @@ app.get("/", function (req, res){
 		res.render('index');
 });
 
-app.post('/details', (req, res) => {
-	var Details = new User(req.body);
-	Details.save()
+app.post('/database', (req, res) => {
+	var myData = new User(req.body);
+	myData.save()
 		.then(item => {
-			res.send("Item successfully saved to the database. Go to /database.")
+			res.render('database')
 		})
 	  .catch(err => {
-	  	res.status(400).send("unable to save to database");
+	  	res.status(400).send("Unable to save to database");
 	  });
 });
 
 app.get('/database', function(req, res) {
-	MongoClient.connect(url, function(err, db) {
-  	if (err) throw err;
-  	var dbo = db.db("information");
-  	dbo.collection("users").find({}, { projection: { _id: 0, firstName: 1, lastName: 1 } }).toArray(function(err, result) {
-    	if (err) throw err;
-    	console.log(result);
-    	db.close();
-  	});
-	});
+	res.render('database');
 });
 
+app.get('/search', function(req, res) {
+	res.render('search');
+});
+
+app.post('/search', (req, res) => {
+	var myData2 = req.body.dblastName; // the user defined lastname
+	User.find({lastName: myData2}, function(err, users) { // searching the database
+		if (err) throw err;
+		res.render('results', {users: users});
+	})
+});
 
 
 

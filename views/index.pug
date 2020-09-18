@@ -1,9 +1,13 @@
 doctype html
 head
-  title Enter your details
-h1 Enter your details
-form(method='post' action='/details')
-  input(type='text' name='firstName' placeholder='Enter first name...' required='')
-  input(type='text' name='lastName' placeholder='Enter last name...' required='')
-  input(type='text' name='email' placeholder='Enter email...' required='')
-  input(type='submit' value='Add details')
+  title Homepage
+  style.
+          body {
+              font-size: 17px;
+              text-align:center;
+          }
+h1 Welcome to the homepage
+  div
+    a(href='/database') Enter details into database
+  div
+    a(href='/search') Search the database
